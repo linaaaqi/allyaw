@@ -1,12 +1,12 @@
 # ide settings
-./idea
-./vscode
+/.idea/
+/.vscode/
 
 # build
 ./build
 
 # npm files
-./node_modules
+/node_modules/
 package-lock.json
 npm-errors.json
 yarn-errors.json
