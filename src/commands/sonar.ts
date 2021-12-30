@@ -53,12 +53,36 @@ export const handler = (argv: Arguments<Options>) => {
         measures[item.metric] = item
       })
 
-      return sendMessage(measures)
+      return Promise.all([
+        sendMessage(measures),
+        sendMentionMessage()
+      ])
     })
     .catch(err => {
       console.error('err', err)
       console.error('err.response', err.response)
     })
+}
+
+const sendMentionMessage = async () => {
+  const webhook = process.env.QYWECHAT_WEBHOOK
+  const mentionIds = process.env.QYWECHAT_MENTION_IDS
+
+  if (!webhook || !mentionIds) {
+    process.exit(1)
+  }
+
+  const message = {
+    "msgtype": "text",
+    "text": {
+      "content": `请及时处理！`,
+      "mentioned_list": mentionIds.split(',')
+    }
+  }
+
+  const response = await request.post(webhook, message)
+
+  console.log('response.data', response.data)
 }
 
 const sendMessage = async (measures) => {
@@ -93,7 +117,7 @@ const sendMessage = async (measures) => {
         "type": 1,
         "url": `${ projectUrl }/commit/${ commitSha }`,
         "title": 'Commit 信息',
-        "quote_text": `信息: ${commitTitle}\n作者: ${ userName } \n邮箱: ${ userEmail }`
+        "quote_text": `信息: ${ commitTitle }\n作者: ${ userName } \n邮箱: ${ userEmail }`
       },
       "sub_title_text": "指标",
       "horizontal_content_list": [

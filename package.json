@@ -1,6 +1,6 @@
 {
   "name": "tf-magic-cli",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "简易Magic CLI开发工具",
   "main": "./lib/index.js",
   "keywords": [
