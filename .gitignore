@@ -3,7 +3,9 @@
 /.vscode/
 
 # build
-./build
+build
+lib
+bin
 
 # npm files
 /node_modules/
