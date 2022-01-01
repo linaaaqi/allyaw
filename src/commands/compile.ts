@@ -1,45 +1,77 @@
-import type { Arguments, CommandBuilder } from 'yargs';
 import chalk from 'chalk';
+import ora from 'ora'
 import { rollup } from 'rollup'
-import esbuild from 'rollup-plugin-esbuild'
-import { RollupOptions } from 'rollup'
-import less from 'rollup-plugin-less';
+import type { Arguments } from 'yargs';
+import { libOptions } from '../rollup.config.js'
 
 type Options = {
   config: string | undefined
 }
 
-export const command = 'compile'
-export const desc = '打包组件'
+const module = {
+  command: 'compile',
+  desc: '打包组件',
+  builder: (yargs) =>
+    yargs
+      .options({
+        config: {
+          alias: 'c',
+          describe: '编译配置文件',
+          type: 'string'
+        }
+      }),
+  handler: async (argv: Arguments<Options>): Promise<void> => {
+    const { config } = argv
+    process.stdout.write(chalk.green('读取配置文件成功!\r\n'))
 
-export const builder: CommandBuilder<Options, Options> = (yargs) =>
-  yargs
-    .options({
-      config: {
-        alias: 'c',
-        describe: '编译配置文件',
-        type: 'string'
+    if (config) {
+      process.stdout.write(chalk.green('配置文件地址：', config))
+    }
+
+    const spinner = ora('正在编译组件...').start()
+
+    const { output: libOutputOptions, ...libInputOptions } = libOptions
+    const libBundle = await rollup(libInputOptions)
+
+    if (!libOutputOptions) {
+      process.exit(1)
+    }
+
+    if (Array.isArray(libOutputOptions)) {
+      for (const libOutputOption of libOutputOptions) {
+        // or write the bundle to disk
+        await libBundle.write(libOutputOption);
       }
-    })
+    } else {
+      // or write the bundle to disk
+      await libBundle.write(libOutputOptions);
+    }
 
-export const handler = async (argv: Arguments<Options>): Promise<void> => {
-  const { config } = argv
-  process.stdout.write(chalk.green('读取配置文件成功!\r\n'))
+    // closes the bundle
+    await libBundle.close();
 
-  if (config) {
-    process.stdout.write(chalk.green('配置文件地址：', config))
+    const { output: typingOutputOptions, ...typingInputOptions } = libOptions
+    const typingBundle = await rollup(typingInputOptions)
+
+    if (!typingOutputOptions) {
+      process.exit(1)
+    }
+
+    if (Array.isArray(typingOutputOptions)) {
+      for (const typingOutputOption of typingOutputOptions) {
+        // or write the bundle to disk
+        await typingBundle.write(typingOutputOption);
+      }
+    } else {
+      // or write the bundle to disk
+      await typingBundle.write(typingOutputOptions);
+    }
+
+    spinner.succeed()
+
+    // closes the bundle
+    await typingBundle.close();
   }
-
-  const bundle = await rollup(inputOptions)
-
-  console.log(bundle); // an array of external dependencies
 }
 
-const inputOptions: RollupOptions = {
-  input: 'src/index.ts',
-  external: id => !/^[./]/.test(id),
-  plugins: [
-    esbuild(),
-    less()
-  ]
-}
+export default module

@@ -1,13 +1,10 @@
-import type { Arguments, CommandBuilder } from 'yargs';
-import { request, wait } from '../utils'
+import type { Arguments } from 'yargs';
+import { request } from '../utils/util.js'
 
 type Options = {
   text: string
   alert?: boolean
 }
-
-export const command = 'sonar <text>'
-export const desc = '使用<text>作为sonar日志输入'
 
 const projectName = process.env.CI_PROJECT_NAME ?? '默认'
 const projectUrl = process.env.CI_PROJECT_URL
@@ -16,7 +13,7 @@ const userEmail = process.env.GITLAB_USER_EMAIL
 const commitSha = process.env.CI_COMMIT_SHA
 const commitTitle = process.env.CI_COMMIT_TITLE
 
-export const builder: CommandBuilder<Options, Options> = (yargs) =>
+const builder = (yargs) =>
   yargs
     .options({
       alert: {
@@ -29,7 +26,7 @@ export const builder: CommandBuilder<Options, Options> = (yargs) =>
       demandOption: true
     })
 
-export const handler = (argv: Arguments<Options>) => {
+const handler = (argv: Arguments<Options>) => {
   const { alert, text } = argv
 
   const regex = /\/api\/ce\/task\?id=.*/
@@ -218,3 +215,12 @@ const getComponentMeasures = async (id) => {
     }
   }).then(({ data }) => data.component.measures)
 }
+
+const module = {
+  command: 'sonar <text>',
+  desc: '使用<text>作为sonar日志输入',
+  builder,
+  handler
+}
+
+export default module
