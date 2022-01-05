@@ -50,6 +50,13 @@ const handler = (argv: Arguments<Options>) => {
         measures[item.metric] = item
       })
 
+      /**
+       * 零BUG数不提醒
+       */
+      if (!measures['new_bugs']?.periods?.[0]?.value) {
+        return
+      }
+
       return Promise.all([
         sendMessage(measures),
         sendMentionMessage()
@@ -132,7 +139,7 @@ const sendMessage = async (measures) => {
         },
         {
           "keyname": "新代码重复率",
-          "value": measures['new_duplicated_lines_density']?.periods?.[0]?.value + '%',
+          "value": measures['new_duplicated_lines_density']?.periods?.[0]?.value ?? 0 + '%',
           "type": 1,
           "url": `${ sonarQubeWebMeasuresUrl }&metric=new_duplicated_lines_density`
         },

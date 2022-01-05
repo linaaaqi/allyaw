@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import ora from 'ora'
 import { rollup } from 'rollup'
 import type { Arguments } from 'yargs';
-import { libOptions } from '../rollup.config.js'
+import { libOptions, typingOptions } from '../rollup.config.js'
 
 type Options = {
   config: string | undefined
@@ -50,7 +50,7 @@ const module = {
     // closes the bundle
     await libBundle.close();
 
-    const { output: typingOutputOptions, ...typingInputOptions } = libOptions
+    const { output: typingOutputOptions, ...typingInputOptions } = typingOptions
     const typingBundle = await rollup(typingInputOptions)
 
     if (!typingOutputOptions) {
