@@ -1,0 +1,18 @@
+.common-tags:
+  tags:
+    - docker-ci-runner
+
+stages:
+  - compile
+
+compile:
+  extends: .common-tags
+  image: node:14
+  stage: lint
+  only:
+    - tags
+  script:
+    - npm i
+    - npm run build
+    - npm login --registry=http://10.77.0.105:4873/
+    - npm publish
