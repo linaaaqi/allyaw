@@ -50,10 +50,12 @@ const handler = (argv: Arguments<Options>) => {
         measures[item.metric] = item
       })
 
+      const bugs = measures['new_bugs']?.periods?.[0]?.value
+
       /**
        * 零BUG数不提醒
        */
-      if (!measures['new_bugs']?.periods?.[0]?.value) {
+      if (!bugs || bugs === '0') {
         return
       }
 
