@@ -5,7 +5,7 @@ import type { Arguments } from 'yargs';
 import { libOptions, typingOptions } from '../rollup.config.js'
 
 type Options = {
-  config: string | undefined
+  config?: string | undefined
 }
 
 const module = {
