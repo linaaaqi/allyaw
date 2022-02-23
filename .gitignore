@@ -9,6 +9,5 @@ bin
 
 # npm files
 /node_modules/
-package-lock.json
 npm-errors.json
 yarn-errors.json
