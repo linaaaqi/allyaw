@@ -1,5 +1,5 @@
 {
-  "name": "tf-magic-cli",
+  "name": "@tf-magic/cli",
   "version": "1.1.0",
   "description": "简易Magic CLI开发工具",
   "exports": "./lib/index.js",
@@ -20,7 +20,7 @@
   "pkg": {
     "scripts": "lib/**/*.js"
   },
-  "author": "郑余靖 <24907@etransfar.com>",
+  "author": "losgif <losgif@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.24.0",
@@ -45,12 +45,9 @@
   "files": [
     "lib"
   ],
-  "publishConfig": {
-    "registry": "http://10.77.0.105:4873/"
-  },
   "repository": {
     "type": "git",
-    "url": "http://gitlab.tf56.lo/24907/tf-magic-component.git"
+    "url": "https://github.com/losgif/tf-magic-cli"
   },
   "engines": {
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
