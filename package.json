@@ -1,6 +1,6 @@
 {
   "name": "@tf-magic/cli",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "简易Magic CLI开发工具",
   "exports": "./lib/index.js",
   "keywords": [
@@ -9,6 +9,7 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
+    "lint": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1 ",
     "package:macos": "pkg . --targets node14-macos-x64 --output bin/macos/magic-cli",
     "package:linux": "pkg . --targets node14-linux-x64 --output bin/linux/magic-cli"
@@ -36,7 +37,7 @@
     "rollup-plugin-postcss": "^4.0.2",
     "yargs": "^17.2.1",
     "pkg": "^5.4.0",
-    "typescript": "^4.4.4"
+    "typescript": "^4.5.5"
   },
   "devDependencies": {
     "@types/node": "^16.11.6",
