@@ -23,8 +23,11 @@
   },
   "author": "losgif <losgif@gmail.com>",
   "license": "MIT",
-  "dependencies": {
+  "peerDependencies": {
     "@openapitools/openapi-generator-cli": "^2.3.10",
+    "axios": "^0.24.0"
+  },
+  "dependencies": {
     "axios": "^0.24.0",
     "chalk": "^4.1.2",
     "esbuild": "^0.14.8",
