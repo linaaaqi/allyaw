@@ -36,6 +36,7 @@ const module = {
         fs.writeFile('swagger.json', swaggerBuffer, err => {
           if (err) {
             process.stdout.write(chalk.red('写入文件失败'))
+            process.exit(1)
           }
         })
       })
