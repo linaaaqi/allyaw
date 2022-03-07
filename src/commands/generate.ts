@@ -66,19 +66,14 @@ const module = {
             '-o',
             'src'
           ])
+          openapi.stdout.on('data', data => {})
 
           openapi.stdout.on('error', err => {
             console.error(err)
           })
 
           openapi.stdout.on('close', code => {
-            if (code !== 0) {
-              spinner.fail('API文件生成失败')
-              process.stdout.write(chalk.red('生成失败\n'))
-              process.exit(1)
-            } else {
-              spinner.succeed('API文件生成完毕\n')
-            }
+            spinner.succeed('API文件生成完毕\n')
           })
         })
       })
