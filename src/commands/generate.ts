@@ -1,5 +1,6 @@
 import axios from 'axios'
 import chalk from 'chalk'
+import * as child_process from 'child_process'
 import * as fs from 'fs'
 import ora from 'ora'
 import { Arguments } from 'yargs'
@@ -23,11 +24,11 @@ const module = {
   handler: async (argv: Arguments<Options>): Promise<void> => {
     const url = argv.host ?? 'https://osstest.tf56.com'
 
-    const spinner = ora(`正在从 ${ url } 处加载API文件`).start()
+    let spinner = ora(`正在从 ${ url } 处加载API文件\n`).start()
 
     axios.get(`${ url }/teamWorkApi/v2/api-docs`)
       .then(({ data: swagger }) => {
-        spinner.text = '正在处理数据'
+        spinner.text = '正在处理数据\n'
 
         for (const pathsKey in swagger.paths) {
           const path = swagger.paths[pathsKey]
@@ -38,22 +39,53 @@ const module = {
           }
         }
 
-        spinner.text = '数据写入中...'
+        spinner.text = '数据写入中...\n'
         const swaggerBuffer = Buffer.from(JSON.stringify(swagger))
 
         fs.writeFile('swagger.json', swaggerBuffer, err => {
-          spinner.stop()
           if (err) {
-            process.stdout.write(chalk.red('写入文件失败'))
+            spinner.fail('swagger 文件生成失败')
+            process.stdout.write(chalk.red('写入文件失败\n'))
             process.exit(1)
           }
+
+          spinner.succeed('swagger 文件已生成')
+          spinner = ora(`开始生成API文件\n`).start()
+
+          const openapi = child_process.spawn('openapi-generator-cli', [
+            'generate',
+            '--skip-validate-spec',
+            '-i',
+            'swagger.json',
+            '-c',
+            'openapi.generator.config.json',
+            '-g',
+            'typescript-axios',
+            '-t',
+            'src/templates/typescript-axios',
+            '-o',
+            'src'
+          ])
+
+          openapi.stdout.on('error', err => {
+            console.error(err)
+          })
+
+          openapi.stdout.on('close', code => {
+            if (code !== 0) {
+              spinner.fail('API文件生成失败')
+              process.stdout.write(chalk.red('生成失败\n'))
+              process.exit(1)
+            } else {
+              spinner.succeed('API文件生成完毕\n')
+            }
+          })
         })
       })
       .catch(error => {
         spinner.stop()
         console.log(error)
-        process.stdout.write(chalk.red('接口文件获取失败'))
-
+        process.stdout.write(chalk.red('接口文件获取失败\n'))
         process.exit(1)
       })
   }
