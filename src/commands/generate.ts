@@ -66,13 +66,13 @@ const module = {
             '-o',
             'src'
           ])
-          openapi.stdout.on('data', data => {})
+          openapi.stdout.on('data', () => {})
 
           openapi.stdout.on('error', err => {
             console.error(err)
           })
 
-          openapi.stdout.on('close', code => {
+          openapi.stdout.on('close', () => {
             spinner.succeed('API文件生成完毕\n')
           })
         })
