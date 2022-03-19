@@ -10,7 +10,7 @@ type Options = {
 
 const module = {
   command: 'compile',
-  desc: '打包组件',
+  desc: '📦 打包组件',
   builder: (yargs) =>
     yargs
       .options({
@@ -20,7 +20,7 @@ const module = {
           type: 'string'
         }
       }),
-  handler: async (argv: Arguments<Options>): Promise<void> => {
+  handler: async (argv: Arguments<Options>) => {
     const { config } = argv
     process.stdout.write(chalk.green('读取配置文件成功!\r\n'))
 
