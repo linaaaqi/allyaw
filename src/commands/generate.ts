@@ -11,7 +11,7 @@ type Options = {
 
 const module = {
   command: 'generate',
-  desc: '生成API接口文件',
+  desc: '📃 生成API接口文件',
   builder: (yargs) =>
     yargs
       .options({
@@ -21,14 +21,14 @@ const module = {
           type: 'string'
         }
       }),
-  handler: async (argv: Arguments<Options>): Promise<void> => {
+  handler: async (argv: Arguments<Options>) => {
     const url = argv.host ?? 'https://osstest.tf56.com'
 
     let spinner = ora(`正在从 ${ url } 处加载API文件\n`).start()
 
     axios.get(`${ url }/teamWorkApi/v2/api-docs`)
       .then(({ data: swagger }) => {
-        spinner.text = '正在处理数据\n'
+        spinner.text = '🔨 正在处理数据\n'
 
         for (const pathsKey in swagger.paths) {
           const path = swagger.paths[pathsKey]
@@ -39,7 +39,7 @@ const module = {
           }
         }
 
-        spinner.text = '数据写入中...\n'
+        spinner.text = '✍️ 数据写入中...\n'
         const swaggerBuffer = Buffer.from(JSON.stringify(swagger))
 
         fs.writeFile('swagger.json', swaggerBuffer, err => {
@@ -50,7 +50,7 @@ const module = {
           }
 
           spinner.succeed('swagger 文件已生成')
-          spinner = ora(`开始生成API文件\n`).start()
+          spinner = ora(`⏳ 开始生成API文件\n`).start()
 
           const openapi = child_process.spawn('openapi-generator-cli', [
             'generate',
