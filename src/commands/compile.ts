@@ -1,16 +1,41 @@
 import chalk from 'chalk';
-import ora from 'ora'
+import { execSync } from 'child_process'
+import * as fs from 'fs'
+import path from 'path'
 import { rollup } from 'rollup'
+import { CommandModule } from 'yargs'
 import type { Arguments } from 'yargs';
-import { libOptions, typingOptions } from '../rollup.config.js'
+import { getBundleOptions } from '../rollup.config.js'
 
 type Options = {
   config?: string | undefined
 }
 
-const module = {
+const bundler = async (libInputOptions, libOutputOptions) => {
+  const libBundle = await rollup(libInputOptions)
+
+  if (!libOutputOptions) {
+    process.stdout.write(chalk.red('缺少编译配置文件！\r\n'))
+    process.exit(1)
+  }
+
+  if (Array.isArray(libOutputOptions)) {
+    for (const libOutputOption of libOutputOptions) {
+      // or write the bundle to disk
+      await libBundle.write(libOutputOption);
+    }
+  } else {
+    // or write the bundle to disk
+    await libBundle.write(libOutputOptions);
+  }
+
+  // closes the bundle
+  await libBundle.close();
+}
+
+const commander: CommandModule = {
   command: 'compile',
-  desc: '📦 打包组件',
+  describe: '📦 打包组件',
   builder: (yargs) =>
     yargs
       .options({
@@ -22,56 +47,48 @@ const module = {
       }),
   handler: async (argv: Arguments<Options>) => {
     const { config } = argv
-    process.stdout.write(chalk.green('读取配置文件成功!\r\n'))
+
+    let bundleOptions = getBundleOptions()
 
     if (config) {
-      process.stdout.write(chalk.green('配置文件地址：', config))
+      // TODO: 合并用户指定配置项
     }
 
-    const spinner = ora('正在编译组件...').start()
+    // TODO: 读取执行目录下的rollup.config.js
 
-    const { output: libOutputOptions, ...libInputOptions } = libOptions
-    const libBundle = await rollup(libInputOptions)
+    const isPnpmWorkspace = fs.existsSync(path.join(process.cwd(), 'pnpm-workspace.yaml'))
 
-    if (!libOutputOptions) {
-      process.exit(1)
-    }
+    const pkgs: [string, string][] = [];
 
-    if (Array.isArray(libOutputOptions)) {
-      for (const libOutputOption of libOutputOptions) {
-        // or write the bundle to disk
-        await libBundle.write(libOutputOption);
-      }
+    if (isPnpmWorkspace) {
+      JSON.parse(execSync('pnpm list -r --json', {
+          stdio: 'pipe',
+        })
+          .toString()
+          .replace(/([\r\n]])[^]*$/, '$1')
+      ).filter(pkg => pkg.path !== process.cwd()) // filter root pkg
+        .forEach(pkg => {
+          pkgs.push([pkg.name, pkg.path]);
+        });
     } else {
-      // or write the bundle to disk
-      await libBundle.write(libOutputOptions);
+      const packageJson = require(path.join(process.cwd(), 'package.json'))
+      pkgs.push([packageJson.name, process.cwd()]);
     }
 
-    // closes the bundle
-    await libBundle.close();
-
-    const { output: typingOutputOptions, ...typingInputOptions } = typingOptions
-    const typingBundle = await rollup(typingInputOptions)
-
-    if (!typingOutputOptions) {
-      process.exit(1)
-    }
-
-    if (Array.isArray(typingOutputOptions)) {
-      for (const typingOutputOption of typingOutputOptions) {
-        // or write the bundle to disk
-        await typingBundle.write(typingOutputOption);
+    for (const [pkgName, pkgPath] of pkgs) {
+      try {
+        process.chdir(pkgPath)
+      } catch (e) {
+        process.stdout.write(chalk.red(`${ pkgName } 路径不存在！\r\n`))
+        process.exit(1)
       }
-    } else {
-      // or write the bundle to disk
-      await typingBundle.write(typingOutputOptions);
+
+      const { output: libOutputOptions, ...libInputOptions } = bundleOptions
+      await bundler(libInputOptions, libOutputOptions)
+
+      process.stdout.write(chalk.green(`${ pkgName } 编译完成！\r\n`))
     }
-
-    spinner.succeed()
-
-    // closes the bundle
-    await typingBundle.close();
   }
 }
 
-export default module
+export default commander

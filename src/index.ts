@@ -7,8 +7,6 @@ import generate from './commands/generate.js'
 import gitCheck from './commands/gitCheck.js'
 import publishedNotification from './commands/publishedNotification.js'
 
-console.log('process.argv', process.argv)
-
 yargs(hideBin(process.argv))
   // Use the command to scaffold.
   .command(compile)

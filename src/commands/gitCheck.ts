@@ -19,7 +19,7 @@ function checkUserEmail (domain: string, userEmail: string) {
   return regex.test(userEmail)
 }
 
-const module: CommandModule = {
+const commander: CommandModule = {
   command: 'git-check',
   describe: '💻 Git 检查',
   builder: (yargs) => yargs
@@ -55,4 +55,4 @@ const module: CommandModule = {
   }
 }
 
-export default module
+export default commander

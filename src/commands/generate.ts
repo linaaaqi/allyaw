@@ -2,8 +2,7 @@ import axios from 'axios'
 import chalk from 'chalk'
 import * as child_process from 'child_process'
 import * as fs from 'fs'
-import ora from 'ora'
-import { Arguments } from 'yargs'
+import { Arguments, CommandModule } from 'yargs'
 
 type Options = {
   host?: string | undefined
@@ -12,9 +11,9 @@ type Options = {
   outputDir?: string | undefined
 }
 
-const module = {
+const commander: CommandModule = {
   command: 'generate',
-  desc: '📃 生成API接口文件',
+  describe: '📃 生成API接口文件',
   builder: (yargs) =>
     yargs
       .options({
@@ -45,12 +44,8 @@ const module = {
     const template = argv.template ?? 'src/templates/typescript-axios'
     const outputDir = argv.outputDir ?? 'src'
 
-    let spinner = ora(`正在从 ${ url } 处加载API文件\n`).start()
-
     axios.get(`${ url }/teamWorkApi/v2/api-docs`)
       .then(({ data: swagger }) => {
-        spinner.text = '🔨 正在处理数据\n'
-
         for (const pathsKey in swagger.paths) {
           const path = swagger.paths[pathsKey]
 
@@ -60,18 +55,13 @@ const module = {
           }
         }
 
-        spinner.text = '✍️ 数据写入中...\n'
         const swaggerBuffer = Buffer.from(JSON.stringify(swagger))
 
         fs.writeFile('swagger.json', swaggerBuffer, err => {
           if (err) {
-            spinner.fail('swagger 文件生成失败')
             process.stdout.write(chalk.red('写入文件失败\n'))
             process.exit(1)
           }
-
-          spinner.succeed('swagger 文件已生成')
-          spinner = ora(`⏳ 开始生成API文件\n`).start()
 
           const openapi = child_process.spawn('openapi-generator-cli', [
             'generate',
@@ -98,14 +88,9 @@ const module = {
           openapi.stdout.on('error', err => {
             console.error(err)
           })
-
-          openapi.stdout.on('close', () => {
-            spinner.succeed('API文件生成完毕\n')
-          })
         })
       })
       .catch(error => {
-        spinner.stop()
         console.log(error)
         process.stdout.write(chalk.red('接口文件获取失败\n'))
         process.exit(1)
@@ -113,4 +98,4 @@ const module = {
   }
 }
 
-export default module
+export default commander

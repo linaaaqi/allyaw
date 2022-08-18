@@ -26,7 +26,7 @@ const sendMentionMessage = async (webhook?: string) => {
   return response
 }
 
-const module: CommandModule = {
+const commander: CommandModule = {
   command: 'published-notification',
   describe: '🪧 发布通知',
   builder: (yargs) => yargs
@@ -42,4 +42,4 @@ const module: CommandModule = {
   }
 }
 
-export default module
+export default commander
