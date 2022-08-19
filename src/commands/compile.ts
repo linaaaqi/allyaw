@@ -84,8 +84,8 @@ const commander: CommandModule = {
       const { output: libOutputOptions, ...libInputOptions } = libOptions
       await bundler(libInputOptions, libOutputOptions)
 
-      // const { output: dtsOutputOptions, ...dtsInputOptions } = typeOptions
-      // await bundler(dtsInputOptions, dtsOutputOptions)
+      const { output: dtsOutputOptions, ...dtsInputOptions } = typeOptions
+      await bundler(dtsInputOptions, dtsOutputOptions)
 
       process.stdout.write(chalk.green(`${ pkgName } 编译完成！\r\n`))
     }
