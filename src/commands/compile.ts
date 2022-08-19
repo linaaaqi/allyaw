@@ -5,7 +5,7 @@ import path from 'path'
 import { rollup } from 'rollup'
 import { CommandModule } from 'yargs'
 import type { Arguments } from 'yargs';
-import { getBundleOptions } from '../rollup.config.js'
+import { libOptions, typeOptions } from '../rollup.config.js'
 
 type Options = {
   config?: string | undefined
@@ -48,8 +48,6 @@ const commander: CommandModule = {
   handler: async (argv: Arguments<Options>) => {
     const { config } = argv
 
-    let bundleOptions = getBundleOptions()
-
     if (config) {
       // TODO: 合并用户指定配置项
     }
@@ -83,12 +81,11 @@ const commander: CommandModule = {
         process.exit(1)
       }
 
-      const { output: libOutputOptions, ...libInputOptions } = bundleOptions
+      const { output: libOutputOptions, ...libInputOptions } = libOptions
       await bundler(libInputOptions, libOutputOptions)
 
-      execSync('tsc', {
-        stdio: 'inherit'
-      })
+      // const { output: dtsOutputOptions, ...dtsInputOptions } = typeOptions
+      // await bundler(dtsInputOptions, dtsOutputOptions)
 
       process.stdout.write(chalk.green(`${ pkgName } 编译完成！\r\n`))
     }

@@ -1,11 +1,20 @@
 import { RollupOptions } from 'rollup'
+import dts from 'rollup-plugin-dts'
 import esbuild from 'rollup-plugin-esbuild'
 import postcss from 'rollup-plugin-postcss'
 import progress from 'rollup-plugin-progress'
 
-export const getBundleOptions = (): RollupOptions => ({
+const getBundleOptions = (...configs: RollupOptions[]): RollupOptions => configs.reduce((acc, config) => ({
+  ...acc,
+  ...config
+}))
+
+const commonOptions: RollupOptions = {
   input: 'src/index.ts',
-  external: id => !/^[./]/.test(id),
+  external: id => !/^[./]/.test(id)
+}
+
+export const libOptions = getBundleOptions(commonOptions, {
   plugins: [
     progress({
       clearLine: true // default: true
@@ -29,4 +38,12 @@ export const getBundleOptions = (): RollupOptions => ({
       preserveModules: true
     }
   ]
+})
+
+export const typeOptions = getBundleOptions(commonOptions, {
+  plugins: [dts()],
+  output: {
+    dir: 'dist/types',
+    preserveModules: true
+  }
 })
