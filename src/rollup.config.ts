@@ -1,5 +1,4 @@
 import { RollupOptions } from 'rollup'
-import dts from 'rollup-plugin-dts'
 import esbuild from 'rollup-plugin-esbuild'
 import postcss from 'rollup-plugin-postcss'
 import progress from 'rollup-plugin-progress'
@@ -16,8 +15,7 @@ export const getBundleOptions = (): RollupOptions => ({
       extract: true,
       minimize: true
     }),
-    esbuild(),
-    dts()
+    esbuild()
   ],
   output: [
     {
@@ -28,9 +26,7 @@ export const getBundleOptions = (): RollupOptions => ({
     {
       dir: 'dist/esm',
       format: 'esm',
-      sourcemap: true,
       preserveModules: true
     }
-  ],
-  treeshake: 'recommended'
+  ]
 })

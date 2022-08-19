@@ -86,6 +86,10 @@ const commander: CommandModule = {
       const { output: libOutputOptions, ...libInputOptions } = bundleOptions
       await bundler(libInputOptions, libOutputOptions)
 
+      execSync('tsc', {
+        stdio: 'inherit'
+      })
+
       process.stdout.write(chalk.green(`${ pkgName } 编译完成！\r\n`))
     }
   }
