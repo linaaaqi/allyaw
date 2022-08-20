@@ -1,0 +1,61 @@
+{
+  "name": "@tf-magic/cli",
+  "version": "1.5.4",
+  "description": "简易Magic CLI开发工具",
+  "exports": "./lib/index.js",
+  "keywords": [
+    "CLI"
+  ],
+  "scripts": {
+    "start": "father dev",
+    "build": "father build",
+    "lint": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1 "
+  },
+  "bin": {
+    "magic-cli": "./lib/index.js"
+  },
+  "files": [
+    "lib"
+  ],
+  "author": "losgif <losgif@gmail.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.3.10",
+    "axios": "^0.24.0"
+  },
+  "dependencies": {
+    "@umijs/utils": "^4.0.13",
+    "axios": "^0.24.0",
+    "chalk": "^4.1.2",
+    "esbuild": "^0.14.8",
+    "inquirer": "^8.2.0",
+    "pkg": "^5.4.0",
+    "postcss": "^8.4.5",
+    "rollup": "^2.60.2",
+    "rollup-plugin-dts": "^4.0.1",
+    "rollup-plugin-esbuild": "^4.7.2",
+    "rollup-plugin-less": "^1.1.3",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-progress": "^1.1.2",
+    "typescript": "^4.5.5",
+    "yargs": "^17.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.6",
+    "@types/yargs": "^17.0.4",
+    "father": "4.0.0-rc.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/losgif/tf-magic/packages/cli"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "pnpm@7.3.0",
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0",
+    "pnpm": "^7.3.0"
+  }
+}

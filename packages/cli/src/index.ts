@@ -2,13 +2,14 @@
 
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import compile from './commands/compile.js';
-import generate from './commands/generate.js'
-import gitCheck from './commands/gitCheck.js'
-import publishedNotification from './commands/publishedNotification.js'
+import compile from './commands/compile';
+import generate from './commands/generate'
+import gitCheck from './commands/gitCheck'
+import publishedNotification from './commands/publishedNotification'
 
 yargs(hideBin(process.argv))
   // Use the command to scaffold.
+  .commandDir('commands')
   .command(compile)
   .command(generate)
   .command(gitCheck)

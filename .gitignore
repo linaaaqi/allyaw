@@ -1,13 +1,22 @@
-# ide settings
-/.idea/
-/.vscode/
+# dependencies
+**/node_modules
 
-# build
-build
-lib
-bin
+# editor settings
+.idea
+.vscode
+
+# production
+**/.umi
+**/.umi-production
+**/dist
+**/lib
+**/es
+**/*-template
+
+# misc
+.DS_Store
 
 # npm files
-/node_modules/
-npm-errors.json
-yarn-errors.json
+**/npm-debug.log*
+**/yarn-error.log
+**/.pnpm-debug.log

@@ -5,7 +5,7 @@ import path from 'path'
 import { rollup } from 'rollup'
 import { CommandModule } from 'yargs'
 import type { Arguments } from 'yargs';
-import { libOptions, typeOptions } from '../rollup.config.js'
+import { libOptions, typeOptions } from '../rollup.config'
 
 type Options = {
   config?: string | undefined
