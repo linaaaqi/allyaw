@@ -1,7 +1,7 @@
 {
-  "name": "create-allyaw",
+  "name": "@allyaw/create",
   "version": "0.0.1",
-  "description": "create-allyaw",
+  "description": "快速生成allyaw项目模版工具",
   "exports": "./lib/index.js",
   "keywords": [
     "CLI"
@@ -13,6 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1 "
   },
   "bin": {
+    "@allyaw/create": "../cli/bin/create-allyaw.js",
     "create-allyaw": "../cli/bin/create-allyaw.js"
   },
   "files": [
