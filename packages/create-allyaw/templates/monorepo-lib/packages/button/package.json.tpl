@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "dumi dev",
-    "build": "rimraf dist && magic-cli compile",
+    "build": "rimraf dist && allyaw compile",
     "types": "tsc --noEmit",
     "test": "jest"
   }

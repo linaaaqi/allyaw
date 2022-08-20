@@ -1,13 +1,11 @@
 {
-  "name": "tf-magic",
+  "name": "allyaw",
   "private": true,
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
     "lint": "tsc --noEmit",
-    "test": "echo \"Error: no test specified\" && exit 1 ",
-    "package:macos": "pkg . --targets node14-macos-x64 --output bin/macos/magic-cli",
-    "package:linux": "pkg . --targets node14-linux-x64 --output bin/linux/magic-cli"
+    "test": "echo \"Error: no test specified\" && exit 1 "
   },
   "author": "losgif <losgif@gmail.com>",
   "license": "MIT",
@@ -20,11 +18,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/losgif/tf-magic"
+    "url": "https://github.com/losgif/allyaw"
   },
   "packageManager": "pnpm@7.3.0",
   "engines": {
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0",
     "pnpm": "^7.3.0"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "webpack"
+      ]
+    }
   }
 }

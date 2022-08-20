@@ -4,7 +4,7 @@ group:
   path: /button
 ---
 
-# @tf-magic/button
+# @allyaw/button
 
 /// TODO
 

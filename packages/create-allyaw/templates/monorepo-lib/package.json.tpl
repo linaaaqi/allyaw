@@ -5,7 +5,7 @@
     "preinstall": "npx only-allow pnpm",
     "start": "dumi dev",
     "docs:build": "rimraf dist && dumi build",
-    "build": "magic-cli compile",
+    "build": "allyaw compile",
     "types": "tsc --noEmit",
     "test": "jest"
   },
@@ -13,7 +13,7 @@
     "@changesets/cli": "^2.21.0",
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^15.0.0",
-    "@tf-magic/cli": "^1.5.4",
+    "@allyaw/cli": "^1.5.4",
     "@types/jest": "^27.4.0",
     "@types/react": "^17.0.37",
     "commitlint": "^15.0.0",

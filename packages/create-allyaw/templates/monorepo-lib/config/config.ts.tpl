@@ -30,6 +30,6 @@ export default defineConfig({
     forkTSChecker: {},
     locales: [['zh-CN', '中文']],
     mode: 'doc',
-    title: "@tf-magic/lib"
+    title: "@allyaw/lib"
   }
 )
