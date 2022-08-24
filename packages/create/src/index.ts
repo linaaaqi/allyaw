@@ -112,10 +112,9 @@ export default async ({ cwd, args }: { cwd: string; args: IOptions }) => {
             value: 'https://registry.npmjs.org/',
             selected: true
           },
-          { title: 'taobao', value: 'https://registry.npmmirror.com' },
-          { title: 'transfar', value: 'http://10.77.0.105:4873' }
+          { title: 'taobao', value: 'https://registry.npmmirror.com' }
         ],
-        initial: 2
+        initial: 1
       }
     ],
     {
