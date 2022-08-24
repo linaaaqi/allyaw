@@ -13,8 +13,8 @@
     "test": "echo \"Error: no test specified\" && exit 1 "
   },
   "bin": {
-    "@allyaw/create": "../cli/bin/create-allyaw.js",
-    "create-allyaw": "../cli/bin/create-allyaw.js"
+    "@allyaw/create": "./bin/create-allyaw.js",
+    "create-allyaw": "./bin/create-allyaw.js"
   },
   "files": [
     "lib",

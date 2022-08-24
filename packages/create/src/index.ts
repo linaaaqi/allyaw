@@ -56,7 +56,7 @@ export default async ({ cwd, args }: { cwd: string; args: IOptions }) => {
     case 'lib':
     default:
       templateChoices = [
-        { title: 'Simple Library', value: 'lib' },
+        { title: 'Simple Library', value: 'simple-lib' },
         { title: 'Monorepo Library', value: 'monorepo-lib' },
         { title: 'Monorepo Child Library', value: 'monorepo-child-lib' }
       ]
@@ -130,7 +130,7 @@ export default async ({ cwd, args }: { cwd: string; args: IOptions }) => {
 
   const target = name ? join(cwd, name) : cwd;
 
-  const version = require('../../../package.json').version;
+  const version = require('../package.json').version;
 
   // detect monorepo
   const monorepoRoot = await detectMonorepoRoot({ target });

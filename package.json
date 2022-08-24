@@ -2,8 +2,6 @@
   "name": "allyaw",
   "private": true,
   "scripts": {
-    "start": "tsc --watch",
-    "build": "tsc",
     "lint": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1 "
   },
