@@ -31,7 +31,7 @@
     "esbuild": "^0.14.8",
     "inquirer": "^8.2.0",
     "pkg": "^5.4.0",
-    "postcss": "^8.4.5",
+    "postcss": "^8.4.31",
     "rollup": "^2.60.2",
     "rollup-plugin-dts": "^4.0.1",
     "rollup-plugin-esbuild": "^4.7.2",
